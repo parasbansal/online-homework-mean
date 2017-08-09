@@ -30,6 +30,10 @@ const HomeworkSchema = mongoose.Schema({
 		ref: "Subject",
 		required: true
 	},
+	viewed_by: {
+		type: [mongoose.Schema.Types.ObjectId],
+		ref: "User",
+	},
 	created_at: {
 		type: Date,
 		required: true,

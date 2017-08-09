@@ -1,15 +1,24 @@
 <nav class="teal darken-2">
   <div class="container">
     <div class="nav-wrapper">
-      <a href="#" class="brand-logo">Mean Auth App</a>
-      <ul id="nav-mobile" class="right hide-on-med-and-down">
+      <a href="#" class="brand-logo">Online Homework</a>
+      <ul id="nav-mobile" class="right" *ngIf="!authService.loggedIn()">
         <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}"><a [routerLink]="['/']">Home</a></li>
-        <li *ngIf="!authService.loggedIn()" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}"><a [routerLink]="['/login']">Login</a></li>
-        <li *ngIf="!authService.loggedIn()" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}"><a [routerLink]="['/register']">Register</a></li>
-        <li *ngIf="authService.loggedIn()" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}"><a [routerLink]="['/dashboard']">Dashboard</a></li>
-        <li *ngIf="authService.loggedIn()" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}"><a [routerLink]="['/profile']">Profile</a></li>
-        <li *ngIf="authService.loggedIn()"><a (click)="logoutClicked()">Logout</a></li>
+        <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}"><a [routerLink]="['/login']">Login</a></li>
+        <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}"><a [routerLink]="['/register']">Register</a></li>
       </ul>
+      <span *ngIf="authService.loggedIn()">
+        <ul id="nav-mobile" class="right" *ngIf="authService.isTeacher()">
+          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}"><a [routerLink]="['/dashboard']">Dashboard</a></li>
+          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}"><a [routerLink]="['/profile']">Profile</a></li>
+          <li><a (click)="logoutClicked()">Logout</a></li>
+        </ul>
+        <ul id="nav-mobile" class="right" *ngIf="!authService.isTeacher()">
+          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}"><a [routerLink]="['/dashboard']">Dashboard</a></li>
+          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}"><a [routerLink]="['/profile']">Profile</a></li>
+          <li><a (click)="logoutClicked()">Logout</a></li>
+        </ul>
+      </span>
     </div>
   </div>
 </nav>

@@ -68,5 +68,21 @@ router.get('/profile', passport.authenticate('jwt', { session: false }), (req, r
 	res.json({ user: req.user });
 });
 
+// Change Profile data
+router.put('/edit', passport.authenticate('jwt', { session: false }), (req, res, next) => {
+	User.editUser(req.body.user._id, req.body.user, (err, user) => {
+		if (err) {
+			res.json({
+				status: false,
+				message: 'There was some error. ' + err
+			});
+		} else {
+			res.json({
+				status: true,
+				user: user
+			});
+		}
+	});
+});
 
 module.exports = router;

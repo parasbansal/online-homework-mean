@@ -1,27 +1,39 @@
-<div>
-  <h3>Register</h3>
+<div class="row">
+  <div class="col s6 offset-s3">
+    <div class="card-panel">
 
-  <form (submit)="onRegisterSubmit()">
-    <div class="input-field">
-      <input type="text" [(ngModel)]="name" id="name" name="name">
-      <label for="name">Name</label>
-    </div>
-    <div class="input-field">
-      <input type="email" [(ngModel)]="email" id="email" name="email">
-      <label for="email">Email</label>
-    </div>
-    <div class="input-field">
-      <input type="text" [(ngModel)]="username" id="username" name="username">
-      <label for="username">Username</label>
-    </div>
-    <div class="input-field">
-      <input type="password" [(ngModel)]="password" id="password" name="password">
-      <label for="password">Password</label>
-    </div>
-    <div class="input-field">
+      <h3>Register</h3>
+      <div class="divider"></div>
+      <form (submit)="onRegisterSubmit()">
+        <div class="input-field">
+          <input type="text" [(ngModel)]="name" id="name" name="name" required pInputText>
+          <label for="name">Name</label>
+        </div>
+        <div class="input-field">
+          <input type="email" [(ngModel)]="email" id="email" name="email" required>
+          <label for="email">Email</label>
+        </div>
+        <div class="input-field">
+          <input type="password" [(ngModel)]="password" id="password" name="password" required>
+          <label for="password">Password</label>
+        </div>
 
-      <button type="submit" class="btn waves-effect waves-light default">Submit</button>
+        <div class="row">
+          <div class="col s6 center">
+            <input class="with-gap" type="radio" name="role" id="role1" [(ngModel)]="role" value="1" required>
+            <label for="role1">Student</label>
+          </div>
+          <div class="col s6 center">
+            <input class="with-gap" type="radio" name="role" id="role2" [(ngModel)]="role" value="2" required>
+            <label for="role2">Teacher</label>
+          </div>
+        </div>
 
+        <div class="divider"></div>
+        <div class="input-field center">
+          <button type="submit" class="btn waves-effect waves-light default">Create Account</button>
+        </div>
+      </form>
     </div>
-  </form>
+  </div>
 </div>

@@ -4,6 +4,7 @@ import { AuthService } from '../../services/auth.service';
 import { FlashMessagesService } from 'angular2-flash-messages';
 import { Router } from '@angular/router';
 
+
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
@@ -12,9 +13,9 @@ import { Router } from '@angular/router';
 export class RegisterComponent implements OnInit {
 
   name: String;
-  username: String;
   email: String;
   password: String;
+  role: Number;
 
   constructor(
     private validateService: ValidateService,
@@ -29,9 +30,9 @@ export class RegisterComponent implements OnInit {
   onRegisterSubmit() {
     const user = {
       name: this.name,
-      username: this.username,
       email: this.email,
-      password: this.password
+      password: this.password,
+      role: this.role
     }
 
     console.log(user);

@@ -1,7 +1,38 @@
 <div *ngIf="user">
-  <h3>{{user.name}}</h3>
-  <ul>
-    <li>Username: {{user.username}}</li>
-    <li>Email: {{user.email}}</li>
-  </ul>
+  <div class="row">
+    <div class="col s8 offset-s2">
+      <div class="card-panel grey lighten-5">
+        <h3>Profile</h3>
+        <div class="divider"></div>
+        <br>
+        <form (submit)="changeProfile()">
+          <div class="input-field">
+            <input type="text" value="{{ user.name }}" name="name" [(ngModel)]="user.name" placeholder="Name">
+          </div>
+          <div class="input-field">
+            <div class="row">
+              <div class="col s2">Email: </div>
+              <div class="col s10">{{ user.email }}</div>
+            </div>
+          </div>
+          <div class="input-field">
+            <div class="row">
+              <div class="col s2">Role: </div>
+              <div class="col s10">
+                <span *ngIf="user.role == 1">Student</span>
+                <span *ngIf="user.role == 2">Teacher</span>
+              </div>
+            </div>
+          </div>
+          <div class="input-field">
+            <div class="row">
+              <div class="col s12 center">
+                <button type="submit" class="btn waves-effect waves-light default">Change</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 </div>

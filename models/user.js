@@ -20,7 +20,7 @@ const UserSchema = mongoose.Schema({
 		required: true
 	},
 	role: {
-		type: Number,	// 0 = Admin (not using now), 1 = Teacher, 2 = Student
+		type: Number,	// 0 = Admin (not using now), 1 = Student, 2 = Teacher
 		required: true
 	},
 	created_at: {
@@ -73,4 +73,8 @@ module.exports.getUsersByRole = function (role, callback) {
 	User.find(query, callback);
 }
 
+// Change Profile
+module.exports.editUser = function (id, newUser, callback) {
+	User.findByIdAndUpdate(id, newUser, callback);
+}
 
