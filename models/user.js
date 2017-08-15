@@ -45,7 +45,7 @@ module.exports.getUserByEmail = function (email, callback) {
 
 // Get user details without password
 module.exports.getUserByIdProtected = function (id, callback) {
-	User.findById(id).select({ password: -1 }).exec(callback);
+	User.findById(id).select('-password').exec(callback);
 }
 
 module.exports.addUser = function (newUser, callback) {
@@ -70,7 +70,7 @@ module.exports.comparePassword = function (password, actualPassword, callback) {
 // Get user list by role
 module.exports.getUsersByRole = function (role, callback) {
 	const query = { role: role }
-	User.find(query, callback);
+	User.find(query).select('-password').sort("name").exec(callback);
 }
 
 // Change Profile

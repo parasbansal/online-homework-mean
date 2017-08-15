@@ -1,0 +1,88 @@
+<h3>Subjects</h3>
+
+<div class="card-panel">
+  <h4>Select a class</h4>
+  <br>
+  <div class="row">
+    <div class="col s1" *ngFor="let class of classes"><span class="class-btn" [class.selected-class]="class === selectedClass" (click)="selectAClass(class)">{{class}}</span></div>
+  </div>
+</div>
+
+<br>
+<div>
+  <button class="btn-floating waves-effect waves-light red right modal-trigger" data-target="modal-add"><i class="material-icons">add</i></button>
+  <h4>Subjects for class {{ selectedClass }}</h4>
+  <div class="clearfix"></div>
+  <br>
+  <div *ngIf="subjects != 0">
+    <div class="card-panel subject-card" *ngFor="let subject of subjects">
+      <table width="100%">
+        <tr>
+          <td>{{ subject. name }}</td>
+          <td width="180px">
+            <a class="btn-flat modal-trigger" data-target="modal-edit" (click)="editBtnClicked(subject)"><i class="material-icons">edit</i></a>
+            <a class="btn-flat modal-trigger" data-target="modal-delete" (click)="deleteBtnClicked(subject._id)"><i class="material-icons">delete</i></a>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <div class="card-panel" *ngIf="subjects == 0">
+    <p>There are no subjects to show</p>
+  </div>
+</div>
+
+
+<!-- Modal Structure -->
+<div id="modal-add" class="modal">
+  <form (submit)="newSubject()">
+    <div class="modal-content">
+      <h4>Add New Subject</h4>
+      <div class="row">
+        <div class="col s12">
+          Class: {{ selectedClass }}
+        </div>
+      </div>
+      <div class="input-field">
+        <input type="text" name="name" [(ngModel)]="name" id="name">
+        <label for="name">Subject Name</label>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="submit" class="modal-close waves-effect waves-green btn">Add Subject</button>
+      <a class="modal-close waves-effect waves-green btn-flat">Close</a>
+    </div>
+  </form>
+</div>
+
+<!-- Modal Structure -->
+<div id="modal-edit" class="modal">
+  <form (submit)="editSubjectSubmit()">
+    <div class="modal-content">
+      <h4>Edit Subject</h4>
+      <div class="input-field">
+        <label class="active">Subject Name</label>
+        <input type="text" name="name" [(ngModel)]="editSubject.name" id="name">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="submit" class="modal-close waves-effect waves-green btn">Edit Subject</button>
+      <a class="modal-close waves-effect waves-green btn-flat">Close</a>
+    </div>
+  </form>
+</div>
+
+<!-- Modal Structure -->
+<div id="modal-delete" class="modal">
+  <form (submit)="deleteSubjectSubmit()">
+    <div class="modal-content center-align">
+      <h4>Delete Subject</h4>
+      <div class="divider"></div>
+      <p class="center-align">Are you 100% sure? It will delete all the homeworks inside this subject(if any).<br><span class="red-text">This action is not reversable.</span></p>
+      <div class="divider"></div>
+      <br>
+      <button type="submit" class="modal-close waves-effect waves-green btn red">Yes, Delete!</button>
+      <a class="modal-close waves-effect waves-green btn-flat">No!</a>
+    </div>
+  </form>
+</div>

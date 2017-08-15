@@ -1,0 +1,27 @@
+<div class="card-panel">
+  <h3>Students</h3>
+  <div class="row">
+    <form (submit)="searchSubmit()">
+      <div class="col s12 input-field">
+        <input type="search" name="search" id="search" [(ngModel)]="search" autocomplete="off" autofocus>
+        <label for="search">Search</label>
+      </div>
+      <div class="col s12 input-field hide-on-med-and-up">
+        <button type="submit" class="btn default block waves-effect waves-light">Search</button>
+      </div>
+    </form>
+  </div>
+</div>
+<div class="right">
+  Students: {{ totalStudents }}
+</div>
+<div class="clearfix"></div>
+<div class="row">
+  <div class="col s12 m6" *ngFor="let student of students">
+    <div class="card-panel card-default student-card">
+      <h5 class="student_name">{{student.name}}</h5>
+      <div><span>Email</span>: &nbsp;{{ student.email }}</div>
+      <div><span>Joined at</span>: &nbsp;{{ student.created_at | date:'medium' }}</div>
+    </div>
+  </div>
+</div>

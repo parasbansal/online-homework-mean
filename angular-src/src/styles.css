@@ -1,8 +1,20 @@
-
+body{
+	background: #e5e5ef;
+}
 .default{
 	background: #00796B;
 }
 
+.block{
+	width: 100%;
+}
+
+.line-breaker{
+	white-space: pre-line;
+}
+.justify-align{
+	text-align: justify;
+}
 .alert{
 	position: fixed;
 	right: 0;
@@ -10,8 +22,6 @@
 	color: #eee;
 	padding: 5px 20px;
 	margin: 10px 0;
-}
-.alert-default{
 	background: #00796B;
 }
 .alert-success{
@@ -19,4 +29,60 @@
 }
 .alert-danger{
 	background: #f22;
+}
+
+.card-default{
+	background: #fafafa;
+}
+
+.subject-card{
+	padding: 0 20px
+
+}
+
+
+
+
+.student_name{
+	margin-top: 0;
+}
+.student-card span{
+	display: inline-block;
+	width: 70px;
+	font-weight: bold;
+}
+.card-small{
+	padding: 0 10px;
+}
+
+
+.class-btn{
+	display: block;
+	padding: 15px 0;
+	text-align: center;
+	background: #eee;
+	color: #333;
+	cursor: pointer;
+	border-radius: 5px;
+	box-shadow: 0 1px 2px #999;
+	transition: all .3s;
+}
+.class-btn:hover{
+	background: #00796B;
+	color: #eee;
+}
+.selected-class{
+	background: #00796B;
+	color: #eee;
+}
+.subject-btn{
+	margin: 5px;
+}
+.subject-btn:focus{
+	background: #00796B;
+	color: #eee;
+}
+.selected-subject{
+	background: #00796B;
+	color: #eee;
 }

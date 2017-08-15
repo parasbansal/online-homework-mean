@@ -9,12 +9,24 @@ import { Router } from '@angular/router';
 })
 export class NavbarComponent implements OnInit {
 
+  user: Object;
+
   constructor(
     private authService: AuthService,
     private router: Router
   ) { }
 
   ngOnInit() {
+    if (this.authService.loggedIn()) {
+      this.authService.getProfile().subscribe(profile => {
+        this.user = profile.user;
+      }, err => {
+        console.log(err);
+        return false;
+      });
+    } else {
+      this.user = "user";
+    }
   }
 
   logoutClicked() {

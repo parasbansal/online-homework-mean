@@ -7,15 +7,20 @@ const config = require('../config/database');
 const Homework = require('../models/homework');
 
 // Add Homework
-router.post('/store', passport.authenticate('jwt', { session: false }), (req, res, next) => {
+router.post('/add', passport.authenticate('jwt', { session: false }), (req, res, next) => {
+
+	if (req.user.role != 2) {
+		res.json({
+			status: false,
+			message: "Not Authorized!"
+		});
+	}
 
 	let newHomework = new Homework({
-		user: req.body.user_id,
+		user: req.user._id,
 		title: req.body.title,
 		body: req.body.body,
-		class: req.body.class,
-		section: req.body.section,
-		subject: req.body.subject_id,
+		subject: req.body.subject
 	});
 
 	Homework.addHomework(newHomework, (err, homework) => {
@@ -34,9 +39,61 @@ router.post('/store', passport.authenticate('jwt', { session: false }), (req, re
 });
 
 
+// edit homework
+router.put('/edit', passport.authenticate('jwt', { session: false }), (req, res, next) => {
+	if (req.user.role != 2 && req.user._id == req.body.user._id) {
+		res.json({
+			status: false,
+			message: "Not Authorized!"
+		});
+	}
 
+	let newHomework = new Homework({
+		_id: req.body._id,
+		title: req.body.title,
+		body: req.body.body
+	});
 
+	Homework.editHomework(req.body._id, newHomework, (err, data) => {
+		if (err) {
+			res.json({
+				status: false,
+				message: 'There was some error. ' + err
+			});
+		} else {
+			res.json({
+				status: true,
+				data: data
+			});
+		}
+	});
 
+});
+
+// delete homework
+router.delete('/delete/:id', passport.authenticate('jwt', { session: false }), (req, res, next) => {
+	if (req.user.role != 2 && req.user._id == req.body.user._id) {
+		res.json({
+			status: false,
+			message: "Not Authorized!"
+		});
+	}
+
+	Homework.deleteHomework(req.params.id, (err, data) => {
+		if (err) {
+			res.json({
+				status: false,
+				message: 'There was some error. ' + err
+			});
+		} else {
+			res.json({
+				status: true,
+				data: data
+			});
+		}
+	});
+
+});
 
 // Get Homework by subject id
 router.get('/subject/:subject_id', passport.authenticate('jwt', { session: false }), (req, res, next) => {

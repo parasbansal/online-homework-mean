@@ -33,7 +33,7 @@ export class ProfileComponent implements OnInit {
       console.log(data);
       if (data.status) {
         this.authService.updateUserData(data.user);
-        this.flashMessage.show("Changed!", { cssClass: 'alert alert-success', timeout: 3000 });
+        this.flashMessage.show("Profile Updated!", { cssClass: 'alert', timeout: 3000 });
       } else {
         console.log("There was some problem!");
         this.flashMessage.show(data.message, { cssClass: 'alert alert-danger', timeout: 3000 });

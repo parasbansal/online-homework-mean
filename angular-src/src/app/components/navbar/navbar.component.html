@@ -1,4 +1,4 @@
-<nav class="teal darken-2">
+<nav class="teal darken-2" *ngIf="user">
   <div class="container">
     <div class="nav-wrapper">
       <a href="#" class="brand-logo">Online Homework</a>
@@ -8,13 +8,16 @@
         <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}"><a [routerLink]="['/register']">Register</a></li>
       </ul>
       <span *ngIf="authService.loggedIn()">
-        <ul id="nav-mobile" class="right" *ngIf="authService.isTeacher()">
-          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}"><a [routerLink]="['/dashboard']">Dashboard</a></li>
+        <ul id="nav-mobile" class="right" *ngIf="!authService.isTeacher()">
+          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}"><a [routerLink]="['/homework']">Homework</a></li>
           <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}"><a [routerLink]="['/profile']">Profile</a></li>
           <li><a (click)="logoutClicked()">Logout</a></li>
         </ul>
-        <ul id="nav-mobile" class="right" *ngIf="!authService.isTeacher()">
+        <ul id="nav-mobile" class="right" *ngIf="authService.isTeacher()">
           <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}"><a [routerLink]="['/dashboard']">Dashboard</a></li>
+          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}"><a [routerLink]="['/students']">Students</a></li>
+          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}"><a [routerLink]="['/subjects']">Subjects</a></li>
+          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}"><a [routerLink]="['/homework']">Homework</a></li>
           <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}"><a [routerLink]="['/profile']">Profile</a></li>
           <li><a (click)="logoutClicked()">Logout</a></li>
         </ul>

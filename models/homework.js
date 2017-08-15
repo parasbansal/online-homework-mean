@@ -17,14 +17,6 @@ const HomeworkSchema = mongoose.Schema({
 		type: String,
 		required: true
 	},
-	class: {
-		type: Number,
-		required: true
-	},
-	section: {
-		type: Number,
-		required: true
-	},
 	subject: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: "Subject",
@@ -37,7 +29,7 @@ const HomeworkSchema = mongoose.Schema({
 	created_at: {
 		type: Date,
 		required: true,
-		default: Date.now
+		default: new Date()
 	}
 });
 
@@ -51,6 +43,18 @@ module.exports.getHomeworkList = function (callback) {
 // Get Homework By Id
 module.exports.getHomeworkById = function (id, callback) {
 	Homework.findById(id).populate('user', 'name').populate('subject', 'name').exec(callback);
+}
+
+// Homework by Subjects
+module.exports.getHomeworkBySubjectId = function (subject_id, callback) {
+	const query = { subject: subject_id };
+	Homework.find(query).populate('user', 'name').sort('-created_at').exec(callback);
+}
+
+// Homework by Subjects
+module.exports.getHomeworkBySubjectIdForDelete = function (subject_id, callback) {
+	const query = { subject: subject_id };
+	Homework.find(query, callback);
 }
 
 // Add Homework
@@ -68,10 +72,8 @@ module.exports.deleteHomework = function (id, callback) {
 	Homework.findByIdAndRemove(id, callback);
 }
 
-
-// Get Homework By Particular class and section
-module.exports.getHomeworkByClassAndSection = function (classNumber, sectionNumber, callback) {
-	const query = { class: classNumber, section: sectionNumber }
-	Homework.find(query).populate('user', 'name').populate('subject', 'name').sort({ Date: -1 }).exec(callback);
+// Delete Bulk Homeworks
+module.exports.deleteBulk = function (ids, callback) {
+	Homework.remove({ _id: { $in: ids } });
 }
 

@@ -6,75 +6,86 @@ import { tokenNotExpired } from 'angular2-jwt';
 @Injectable()
 export class AuthService {
 
-  authToken: any;
-  user: any;
+	authToken: any;
+	user: any;
 
-  constructor(private http: Http) { }
+	constructor(private http: Http) { }
 
-  registerUser(user) {
-    let headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    return this.http.post('http://localhost:3000/users/register', user, { headers: headers })
-      .map(res => res.json());
-  }
+	registerUser(user) {
+		let headers = new Headers();
+		headers.append('Content-Type', 'application/json');
+		return this.http.post('http://localhost:3000/users/register', user, { headers: headers })
+			.map(res => res.json());
+	}
 
-  authenticateUser(user) {
-    let headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    return this.http.post('http://localhost:3000/users/authenticate', user, { headers: headers })
-      .map(res => res.json());
-  }
+	authenticateUser(user) {
+		let headers = new Headers();
+		headers.append('Content-Type', 'application/json');
+		return this.http.post('http://localhost:3000/users/authenticate', user, { headers: headers })
+			.map(res => res.json());
+	}
 
-  getProfile() {
-    let headers = new Headers();
-    this.loadToken();
-    headers.append('Authorization', this.authToken);
-    headers.append('Content-Type', 'application/json');
-    return this.http.get('http://localhost:3000/users/profile', { headers: headers })
-      .map(res => res.json());
-  }
+	getProfile() {
+		let headers = new Headers();
+		this.loadToken();
+		headers.append('Authorization', this.authToken);
+		headers.append('Content-Type', 'application/json');
+		return this.http.get('http://localhost:3000/users/profile', { headers: headers })
+			.map(res => res.json());
+	}
 
-  changeProfile(user) {
-    let headers = new Headers();
-    this.loadToken();
-    headers.append('Authorization', this.authToken);
-    headers.append('Content-Type', 'application/json');
-    return this.http.put('http://localhost:3000/users/edit', { user: user }, { headers: headers })
-      .map(res => res.json());
-  }
+	changeProfile(user) {
+		let headers = new Headers();
+		this.loadToken();
+		headers.append('Authorization', this.authToken);
+		headers.append('Content-Type', 'application/json');
+		return this.http.put('http://localhost:3000/users/edit', { user: user }, { headers: headers })
+			.map(res => res.json());
+	}
 
-  storeUserData(token, user) {
-    localStorage.setItem('token', token);
-    localStorage.setItem('user', JSON.stringify(user));
-    this.authToken = token;
-    this.user = user;
-  }
+	storeUserData(token, user) {
+		localStorage.setItem('token', token);
+		localStorage.setItem('user', JSON.stringify(user));
+		this.authToken = token;
+		this.user = user;
+	}
 
-  updateUserData(user) {
-    localStorage.setItem('user', JSON.stringify(user));
-    this.user = user;
-  }
+	updateUserData(user) {
+		localStorage.setItem('user', JSON.stringify(user));
+		this.user = user;
+	}
 
-  loadToken() {
-    const token = localStorage.getItem('token');
-    this.authToken = token;
-  }
+	loadToken() {
+		const token = localStorage.getItem('token');
+		this.authToken = token;
+	}
 
-  loggedIn() {
-    return tokenNotExpired();
-  }
+	loggedIn() {
+		return tokenNotExpired();
+	}
 
-  isTeacher() {
-    if (this.user != null && this.user.role == 2) {
-      return true;
-    }
-    return false;
-  }
+	isTeacher() {
+		let user: Object;
+		user = JSON.parse(localStorage.getItem('user'));
+		if (user != null && user['role'] == 2) {
+			return true;
+		}
+		return false;
+	}
 
-  logout() {
-    this.authToken = null;
-    this.user = null;
-    localStorage.clear();
-  }
+	myId() {
+		let user: Object;
+		user = JSON.parse(localStorage.getItem('user'));
+		if (user != null) {
+			return user['id'];
+		}
+		return false;
+	}
+
+	logout() {
+		this.authToken = null;
+		this.user = null;
+		localStorage.clear();
+	}
 
 }

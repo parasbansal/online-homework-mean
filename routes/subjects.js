@@ -15,12 +15,15 @@ router.get('/', passport.authenticate('jwt', { session: false }), (req, res, nex
 				message: "There was some error. " + err
 			});
 		}
-		res.json({ subjects: subjects });
+		res.json({
+			status: true,
+			subjects: subjects
+		});
 	});
 });
 
 // Add new Subject
-router.post('/store', passport.authenticate('jwt', { session: false }), (req, res, next) => {
+router.post('/add', passport.authenticate('jwt', { session: false }), (req, res, next) => {
 	let subject = new Subject({
 		name: req.body.subject,
 		class: req.body.class
@@ -46,11 +49,11 @@ router.post('/store', passport.authenticate('jwt', { session: false }), (req, re
 // Edit Subject
 router.put('/edit', passport.authenticate('jwt', { session: false }), (req, res, next) => {
 	let subject = new Subject({
-		name: req.body.subject,
-		class: req.body.class
+		_id: req.body._id,
+		name: req.body.name
 	});
 
-	Subject.editSubject(req.body.id, subject, (err, subject) => {
+	Subject.editSubject(req.body._id, subject, (err, newSsubject) => {
 		if (err) {
 			res.json({
 				status: false,
@@ -59,17 +62,32 @@ router.put('/edit', passport.authenticate('jwt', { session: false }), (req, res,
 		} else {
 			res.json({
 				status: true,
-				subject: subject,
-				message: "Subject edited!"
+				subject: newSsubject
 			});
 		}
 	});
 
 });
 
+// Delete Subject
+router.delete('/delete/:id', passport.authenticate('jwt', { session: false }), (req, res, next) => {
+	Subject.deleteSubjectWithHomeworks(req.params.id, (err, data) => {
+		if (err) {
+			res.json({
+				status: false,
+				message: 'There was some error. ' + err
+			});
+		} else {
+			res.json({
+				status: true,
+				data: data
+			});
+		}
+	});
+});
+
 // Get Subject List by class
 router.get('/class/:classNumber', passport.authenticate('jwt', { session: false }), (req, res, next) => {
-	console.log(req.params.classNumber);
 	Subject.getSubjectsByClass(req.params.classNumber, (err, subjects) => {
 		if (err) {
 			res.json({

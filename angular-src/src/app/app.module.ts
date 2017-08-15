@@ -14,19 +14,37 @@ import { RegisterComponent } from './components/register/register.component';
 import { HomeComponent } from './components/home/home.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ProfileComponent } from './components/profile/profile.component';
+import { StudentsComponent } from './components/students/students.component';
+import { SubjectsComponent } from './components/subjects/subjects.component';
+import { HomeworkComponent } from './components/homework/homework.component';
+import { NotFoundComponent } from './components/not-found/not-found.component';
 
 // Services
 import { ValidateService } from './services/validate.service';
 import { AuthService } from './services/auth.service';
+import { StudentsService } from './services/students.service';
+import { SubjectsService } from './services/subjects.service';
+import { HomeworksService } from './services/homeworks.service';
 
+// Gaurds
 import { AuthGuard } from './guards/auth.gaurd';
+import { GuestGuard } from './guards/guest.gaurd';
+import { TeacherGuard } from './guards/teacher.gaurd';
 
 const appRoutes: Routes = [
-  { path: '', component: HomeComponent },
-  { path: 'register', component: RegisterComponent },
-  { path: 'login', component: LoginComponent },
-  { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
-  { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] }
+  { path: '', component: HomeComponent, canActivate: [GuestGuard] },
+  { path: 'register', component: RegisterComponent, canActivate: [GuestGuard] },
+  { path: 'login', component: LoginComponent, canActivate: [GuestGuard] },
+
+  { path: 'dashboard', component: DashboardComponent, canActivate: [TeacherGuard] },
+  { path: 'students', component: StudentsComponent, canActivate: [TeacherGuard] },
+  { path: 'subjects', component: SubjectsComponent, canActivate: [TeacherGuard] },
+
+  { path: 'homework', component: HomeworkComponent, canActivate: [AuthGuard] },
+  { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
+
+
+  { path: 'not_found', component: NotFoundComponent },
 ];
 
 @NgModule({
@@ -37,7 +55,11 @@ const appRoutes: Routes = [
     RegisterComponent,
     HomeComponent,
     DashboardComponent,
-    ProfileComponent
+    ProfileComponent,
+    StudentsComponent,
+    SubjectsComponent,
+    HomeworkComponent,
+    NotFoundComponent,
   ],
   imports: [
     BrowserModule,
@@ -46,7 +68,16 @@ const appRoutes: Routes = [
     RouterModule.forRoot(appRoutes),
     FlashMessagesModule
   ],
-  providers: [ValidateService, AuthService, AuthGuard],
+  providers: [
+    ValidateService,
+    AuthService,
+    StudentsService,
+    SubjectsService,
+    HomeworksService,
+    AuthGuard,
+    GuestGuard,
+    TeacherGuard
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

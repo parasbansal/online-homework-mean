@@ -1,0 +1,126 @@
+<h3>Homeworks</h3>
+
+<div class="card-panel">
+  <h5>Select a class</h5>
+  <br>
+  <div class="row">
+    <div class="col s1" *ngFor="let class of classes"><span class="class-btn" [class.selected-class]="class === selectedClass" (click)="selectAClass(class)">{{class}}</span></div>
+  </div>
+</div>
+
+<div class="card-panel">
+  <h5>Select a subject (Class {{ selectedClass }})</h5>
+  <div class="clearfix"></div>
+  <br>
+  <div *ngIf="subjects != 0" class="center-align">
+    <button *ngFor="let subject of subjects" class="btn btn-flat subject-btn waves-effect waves-teal" [class.selected-subject]="subject === selectedSubject"
+      (click)="selectASubject(subject)">{{ subject.name }}</button>
+  </div>
+  <div *ngIf="subjects == 0">
+    <p>There are no subjects to show</p>
+  </div>
+</div>
+
+<br>
+<div *ngIf="selectedSubject">
+  <button *ngIf="authService.isTeacher()" class="btn-floating waves-effect waves-light red right modal-trigger" data-target="modal-add"><i class="material-icons">add</i></button>
+  <h5>Homeworks for {{selectedSubject.name}}, class {{ selectedClass }}</h5>
+  <div class="clearfix"></div>
+  <div *ngIf="homeworks != 0">
+    <div *ngFor="let homework of homeworks" class="card-panel">
+
+      <table width="100%">
+        <tr>
+          <td>
+            <h5>{{ homework.title }}</h5>
+            <p>- {{ homework.user.name }}</p>
+          </td>
+          <td width="200px">
+            <div>{{ homework.created_at | date:'medium' }}</div>
+            <div *ngIf="homework.user._id == myId">
+              <a class="btn-flat modal-trigger" data-target="modal-edit" (click)="editBtnClicked(homework)"><i class="material-icons">edit</i></a>
+              <a class="btn-flat modal-trigger" data-target="modal-delete" (click)="deleteBtnClicked(homework._id)"><i class="material-icons">delete</i></a>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <div class="line-breaker justify-align">{{ homework.body }}</div>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <div class="card-panel" *ngIf="homeworks == 0">
+    <p>There are no homeworks to show</p>
+  </div>
+</div>
+
+<!-- Modal Structure -->
+<div id="modal-add" class="modal modal-fixed-footer">
+  <form (submit)="newHomeworkSubmit()">
+    <div class="modal-content">
+      <h4>Add New Homework</h4>
+      <div class="row">
+        <div class="col s12" *ngIf="selectedSubject">
+          Class: {{ selectedClass }}<br> Subject: {{ selectedSubject.name }}
+          <input type="hidden" value="{{ selectedSubject._id }}" [(ngModel)]="subject" name="subject">
+        </div>
+      </div>
+      <div class="input-field">
+        <input type="text" name="title" id="title" [(ngModel)]="title" required>
+        <label for="title">Title</label>
+      </div>
+      <div class="input-field">
+        <textarea id="body" name="body" [(ngModel)]="body" class="materialize-textarea" required></textarea>
+        <label for="body">Content</label>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="submit" class="modal-close waves-effect waves-green btn">Add Homework</button>
+      <a class="modal-close waves-effect waves-green btn-flat">Close</a>
+    </div>
+  </form>
+</div>
+
+<!-- Modal Structure -->
+<div id="modal-edit" class="modal modal-fixed-footer">
+  <form (submit)="editHomeworkSubmit()">
+    <div class="modal-content" *ngIf="editHomework">
+      <h4>Edit Homework</h4>
+      <div class="row">
+        <div class="col s12" *ngIf="selectedSubject">
+          Class: {{ selectedClass }}<br> Subject: {{ selectedSubject.name }}
+          <input type="hidden" value="{{ selectedSubject._id }}" [(ngModel)]="subject" name="subject">
+        </div>
+      </div>
+      <div class="input-field">
+        <input type="text" name="title" id="title" [(ngModel)]="editHomework.title" required>
+        <label for="title" class="active">Title</label>
+      </div>
+      <div class="input-field">
+        <textarea id="body" name="body" [(ngModel)]="editHomework.body" class="materialize-textarea active" required></textarea>
+        <label for="body" class="active">Content</label>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="submit" class="modal-close waves-effect waves-green btn">Edit Homework</button>
+      <a class="modal-close waves-effect waves-green btn-flat">Close</a>
+    </div>
+  </form>
+</div>
+
+<!-- Modal Structure -->
+<div id="modal-delete" class="modal">
+  <form (submit)="deleteHomeworkSubmit()">
+    <div class="modal-content center-align">
+      <h4>Delete Homework</h4>
+      <div class="divider"></div>
+      <p class="center-align">Are you 100% sure?<br><span class="red-text">This action is not reversable.</span></p>
+      <div class="divider"></div>
+      <br>
+      <button type="submit" class="modal-close waves-effect waves-green btn red">Yes, Delete!</button>
+      <a class="modal-close waves-effect waves-green btn-flat">No!</a>
+    </div>
+  </form>
+</div>

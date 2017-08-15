@@ -51,8 +51,8 @@ router.post('/authenticate', (req, res, next) => {
 					user: {
 						id: user._id,
 						name: user.name,
-						username: user.username,
-						email: user.email
+						email: user.email,
+						role: user.role
 					}
 				})
 			} else {
@@ -71,6 +71,7 @@ router.get('/profile', passport.authenticate('jwt', { session: false }), (req, r
 // Change Profile data
 router.put('/edit', passport.authenticate('jwt', { session: false }), (req, res, next) => {
 	User.editUser(req.body.user._id, req.body.user, (err, user) => {
+		console.log(user);
 		if (err) {
 			res.json({
 				status: false,
@@ -80,6 +81,23 @@ router.put('/edit', passport.authenticate('jwt', { session: false }), (req, res,
 			res.json({
 				status: true,
 				user: user
+			});
+		}
+	});
+});
+
+// Get all the students
+router.get('/students', passport.authenticate('jwt', { session: false }), (req, res, next) => {
+	User.getUsersByRole(1, (err, students) => {
+		if (err) {
+			res.json({
+				status: false,
+				message: 'There was some error. ' + err
+			});
+		} else {
+			res.json({
+				status: true,
+				students: students
 			});
 		}
 	});
